@@ -1,9 +1,27 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../database/sequelize.js';
 import Paciente from './paciente.js';
 import TarefaVisual from './tarefa_Visual.js';
 
-const BotaoToTravado = sequelize.define('BotaoToTravado', {
+interface BotaoToTravadoAttributes {
+    id: string;
+    data: string;
+    hora: string;
+    pacienteId?: string;
+    tarefaId?: string;
+}
+
+interface BotaoToTravadoCreationAttributes extends Optional<BotaoToTravadoAttributes, 'id' | 'data' | 'hora'> {}
+
+class BotaoToTravado extends Model<BotaoToTravadoAttributes, BotaoToTravadoCreationAttributes> implements BotaoToTravadoAttributes {
+    public id!: string;
+    public data!: string;
+    public hora!: string;
+    public pacienteId?: string;
+    public tarefaId?: string;
+}
+
+BotaoToTravado.init({
     id: {
         type: DataTypes.UUID,
         primaryKey: true,
@@ -19,6 +37,10 @@ const BotaoToTravado = sequelize.define('BotaoToTravado', {
         defaultValue: DataTypes.NOW,
         allowNull: false
     }
+}, {
+    sequelize,
+    modelName: 'BotaoToTravado',
+    tableName: 'Botoes_ToTravado'
 });
 
 Paciente.hasMany(BotaoToTravado, { foreignKey: 'pacienteId', as: 'travamentos' });

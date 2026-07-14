@@ -1,15 +1,37 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../database/sequelize.js';
 import Paciente from './paciente.js';
 
-const BotaoSos = sequelize.define('BotaoSos', {
+interface BotaoSosAttributes {
+    id: string;
+    latitude: string;
+    longitude: string;
+    data: string;
+    hora: string;
+    pushEnviado: boolean;
+    pacienteId?: string;
+}
+
+interface BotaoSosCreationAttributes extends Optional<BotaoSosAttributes, 'id' | 'data' | 'hora' | 'pushEnviado'> {}
+
+class BotaoSos extends Model<BotaoSosAttributes, BotaoSosCreationAttributes> implements BotaoSosAttributes {
+    public id!: string;
+    public latitude!: string;
+    public longitude!: string;
+    public data!: string;
+    public hora!: string;
+    public pushEnviado!: boolean;
+    public pacienteId?: string;
+}
+
+BotaoSos.init({
     id: {
         type: DataTypes.UUID,
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4
     },
     latitude: {
-        type: DataTypes.STRING, 
+        type: DataTypes.STRING,
         allowNull: false
     },
     longitude: {
@@ -30,6 +52,10 @@ const BotaoSos = sequelize.define('BotaoSos', {
         type: DataTypes.BOOLEAN,
         defaultValue: false
     }
+}, {
+    sequelize,
+    modelName: 'BotaoSos',
+    tableName: 'Botoes_Sos'
 });
 
 Paciente.hasMany(BotaoSos, { foreignKey: 'pacienteId', as: 'alertasSos' });
