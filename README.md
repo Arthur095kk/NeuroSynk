@@ -23,7 +23,7 @@ O sistema conta com duas travas de segurança essenciais:
 | **Cuidador** | Configura a rotina com uploads de fotos reais, recebe alertas *push* e monitora a localização em tempo real no mapa. |
 | **Profissional de Saúde (Psicólogo/Terapeuta)** | Acessa o dashboard web com histórico de crises, uso do botão SOS e tarefas pendentes para identificar gatilhos e ajustar a terapia. |
 
-# ⚙️ Regras de Negócio Importantes
+## ⚙️ Regras de Negócio Importantes
 
 * Uso Obrigatório de Imagens Reais (Rotina Visual): O sistema prioriza o upload de fotos reais do cotidiano em vez de ícones genéricos para facilitar a previsibilidade e a compreensão.  
 
