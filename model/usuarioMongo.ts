@@ -5,7 +5,11 @@ export interface IUsuario extends Document {
   email: string;
   senha?: string;
   tipo_usuario: 'Paciente' | 'Cuidador' | 'Terapeuta' | 'Medico';
-  proxima_medicacao?: string; // <--- NOVO CAMPO
+  status?: 'Ativo' | 'Em observação' | 'Internado' | 'Alta';
+  proxima_medicacao?: string; 
+  diagnostico?: string;           
+  observacoes?: string;            
+  ultimaRevisao?: string; 
   localizacao?: {
     type: string;
     coordinates: number[]; 
@@ -39,7 +43,15 @@ const UsuarioSchema = new Schema<IUsuario>(
       enum: ['Paciente', 'Cuidador', 'Terapeuta', 'Medico'],
       set: (val: string) => val ? val.charAt(0).toUpperCase() + val.slice(1).toLowerCase() : val
     },
+    status: {
+  type: String,
+  enum: ['Ativo', 'Em observação', 'Internado', 'Alta'],
+  default: 'Ativo'
+},
     proxima_medicacao: { type: String, default: '' },
+    diagnostico: { type: String, default: '' },        
+    observacoes: { type: String, default: '' },         
+    ultimaRevisao: { type: String, default: '' },
     localizacao: {
       type: {
         type: String,

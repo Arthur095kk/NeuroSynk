@@ -10,9 +10,11 @@ interface InsightAttributes {
     periodo_Mes?: string;
     terapeutaId?: string;
     pacienteId?: string;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
-interface InsightCreationAttributes extends Optional<InsightAttributes, 'idInsight' | 'periodo_semana' | 'periodo_Mes'> {}
+interface InsightCreationAttributes extends Optional<InsightAttributes, 'idInsight' | 'periodo_semana' | 'periodo_Mes' | 'createdAt' | 'updatedAt'> {}
 
 class Insight extends Model<InsightAttributes, InsightCreationAttributes> implements InsightAttributes {
     public idInsight!: string;
@@ -21,6 +23,8 @@ class Insight extends Model<InsightAttributes, InsightCreationAttributes> implem
     public periodo_Mes?: string;
     public terapeutaId?: string;
     public pacienteId?: string;
+    public readonly createdAt!: Date;
+    public readonly updatedAt!: Date;
 }
 
 Insight.init({
@@ -34,23 +38,38 @@ Insight.init({
         allowNull: false
     },
     periodo_semana: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(20), 
         allowNull: true
     },
     periodo_Mes: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(10), 
         allowNull: true
+    },
+    terapeutaId: {
+        type: DataTypes.UUID,
+        allowNull: true,
+        references: {
+            model: 'Terapeutas',
+            key: 'usuarioId'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
+    },
+    pacienteId: {
+        type: DataTypes.UUID,
+        allowNull: true,
+        references: {
+            model: 'Pacientes',
+            key: 'usuarioId'
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL'
     }
 }, {
     sequelize,
     modelName: 'Insight',
-    tableName: 'Insights'
+    tableName: 'Insights',
+    timestamps: true
 });
-
-Terapeuta.hasMany(Insight, { foreignKey: 'terapeutaId', as: 'insightsGerados' });
-Insight.belongsTo(Terapeuta, { foreignKey: 'terapeutaId', as: 'terapeuta' });
-
-Paciente.hasMany(Insight, { foreignKey: 'pacienteId', as: 'historicoInsights' });
-Insight.belongsTo(Paciente, { foreignKey: 'pacienteId', as: 'pacienteAnalisado' });
 
 export default Insight;

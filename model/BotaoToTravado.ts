@@ -40,7 +40,8 @@ BotaoToTravado.init({
 }, {
     sequelize,
     modelName: 'BotaoToTravado',
-    tableName: 'Botoes_ToTravado'
+    tableName: 'Botoes_ToTravado',
+    timestamps: true
 });
 
 Paciente.hasMany(BotaoToTravado, { foreignKey: 'pacienteId', as: 'travamentos' });
